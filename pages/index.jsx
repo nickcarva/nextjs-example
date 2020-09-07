@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 
 import Layout, { siteTitle } from '../components/Layout'
+import Date from '../components/Date'
 import { getSortedPostsData } from '../lib/posts'
 
 import utilStyles from '../styles/utils.module.css'
@@ -16,7 +18,6 @@ export async function getStaticProps () {
   }
 }
 
-// eslint-disable-next-line react/prop-types
 function Home ({ allPostsData }) {
   return (
     <Layout home>
@@ -33,26 +34,28 @@ function Home ({ allPostsData }) {
             <a>My fist post &rarr;</a>
           </Link>
         </p>
-
-        <p className={`${utilStyles.homeFooter} ${utilStyles.lightText}`}>
-          (This is a sample website - you’ll be building a site like this on{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <h2 className={utilStyles.titleLg}>Blog</h2>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              {title}
+              <Link href="/posts/[id]" as={`/posts/${id}`}>
+                <a>{title}</a>
+              </Link>
               <br />
-              {id}
-              <br />
-              {date}
+              <small className={utilStyles.lightText}>
+                <Date dateString={date} />
+              </small>
             </li>
           ))}
         </ul>
       </section>
+
+      <p className={`${utilStyles.homeFooter} ${utilStyles.lightText}`}>
+        (This is a sample website - you’ll be building a site like this on{' '}
+        <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
+      </p>
     </Layout>
   )
 }
